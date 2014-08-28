@@ -12,6 +12,27 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
+
+TIME_ZONE = 'America/Los_Angeles'
+ 
+# Language code for this installation. All choices can be found here:
+# http://www.i18nguy.com/unicode/language-identifiers.html
+LANGUAGE_CODE = 'en-US'
+ 
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = ()
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -29,6 +50,16 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'accounts.PortalUser'
 
 
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+from django.conf import global_settings
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+'django.core.context_processors.request',
+)
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -38,22 +69,47 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'south',
+    'compressor',
+    'taggit',
+    'modelcluster',
+    'django.contrib.admin',
+     
+    'wagtail.wagtailcore',
+    'wagtail.wagtailadmin',
+    'wagtail.wagtaildocs',
+    'wagtail.wagtailsnippets',
+    'wagtail.wagtailusers',
+    'wagtail.wagtailimages',
+    'wagtail.wagtailembeds',
+    'wagtail.wagtailsearch',
+    'wagtail.wagtailredirects',
+    'wagtail.wagtailforms',
+
     'accounts',
+    'cms',
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # wagtail specific middleware
+    'wagtail.wagtailcore.middleware.SiteMiddleware',
+    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
+
 )
 
 ROOT_URLCONF = 'djtest.urls'
 
 WSGI_APPLICATION = 'djtest.wsgi.application'
 
+TEMPLATE_DIRS = ()
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -81,6 +137,17 @@ USE_I18N = False
 USE_L10N = True
 
 USE_TZ = True
+
+# django-compressor settings
+COMPRESS_PRECOMPILERS = (
+('text/x-scss', 'django_libsass.SassCompiler'),
+)
+
+WAGTAIL_SITE_NAME = 'Django Test'
+ 
+# Auth settings
+LOGIN_URL = 'wagtailadmin_login'
+LOGIN_REDIRECT_URL = 'wagtailadmin_home'
 
 
 # Static files (CSS, JavaScript, Images)
