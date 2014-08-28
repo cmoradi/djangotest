@@ -109,7 +109,7 @@ ROOT_URLCONF = 'djtest.urls'
 
 WSGI_APPLICATION = 'djtest.wsgi.application'
 
-TEMPLATE_DIRS = ()
+TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'djtest','templates'),)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

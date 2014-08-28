@@ -14,11 +14,11 @@ class Migration(SchemaMigration):
             ('password', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('last_login', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
             ('is_superuser', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('username', self.gf('django.db.models.fields.CharField')(max_length=9, unique=True, db_index=True)),
+            ('slate_id', self.gf('django.db.models.fields.CharField')(unique=True, db_index=True, max_length=9)),
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('email', self.gf('django.db.models.fields.EmailField')(max_length=255, unique=True)),
-            ('slate_guid', self.gf('django.db.models.fields.CharField')(max_length=44, unique=True, db_index=True)),
+            ('email', self.gf('django.db.models.fields.EmailField')(unique=True, max_length=255)),
+            ('slate_guid', self.gf('django.db.models.fields.CharField')(unique=True, db_index=True, max_length=44)),
             ('is_staff', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('date_joined', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
@@ -59,9 +59,9 @@ class Migration(SchemaMigration):
         'accounts.portaluser': {
             'Meta': {'ordering': "['last_name', 'first_name']", 'object_name': 'PortalUser'},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '255', 'unique': 'True'}),
+            'email': ('django.db.models.fields.EmailField', [], {'unique': 'True', 'max_length': '255'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'user_set'", 'to': "orm['auth.Group']", 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'user_set'", 'to': "orm['auth.Group']", 'symmetrical': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -69,15 +69,15 @@ class Migration(SchemaMigration):
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'slate_guid': ('django.db.models.fields.CharField', [], {'max_length': '44', 'unique': 'True', 'db_index': 'True'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'user_set'", 'to': "orm['auth.Permission']", 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'max_length': '9', 'unique': 'True', 'db_index': 'True'})
+            'slate_guid': ('django.db.models.fields.CharField', [], {'unique': 'True', 'db_index': 'True', 'max_length': '44'}),
+            'slate_id': ('django.db.models.fields.CharField', [], {'unique': 'True', 'db_index': 'True', 'max_length': '9'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'user_set'", 'to': "orm['auth.Permission']", 'symmetrical': 'False'})
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '80', 'unique': 'True'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['auth.Permission']", 'blank': 'True'})
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
+            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'to': "orm['auth.Permission']", 'symmetrical': 'False'})
         },
         'auth.permission': {
             'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'object_name': 'Permission', 'unique_together': "(('content_type', 'codename'),)"},
@@ -87,7 +87,7 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
         'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'object_name': 'ContentType', 'db_table': "'django_content_type'", 'unique_together': "(('app_label', 'model'),)"},
+            'Meta': {'ordering': "('name',)", 'db_table': "'django_content_type'", 'object_name': 'ContentType', 'unique_together': "(('app_label', 'model'),)"},
             'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),

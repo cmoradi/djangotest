@@ -30,7 +30,7 @@ class PortalUserManager(BaseUserManager):
 @python_2_unicode_compatible
 class PortalUser(AbstractBaseUser, PermissionsMixin):
     # Wagtail requires the username to be defined.
-    username = models.CharField('slate ID', max_length=9,
+    slate_id = models.CharField('slate ID', max_length=9,
                                 unique=True, db_index=True)
     
     first_name = models.CharField(_('first name'), max_length=255)
@@ -49,7 +49,7 @@ class PortalUser(AbstractBaseUser, PermissionsMixin):
 
     objects = PortalUserManager()
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'slate_id'
     REQUIRED_FIELDS = ['email']
 
     class Meta:
